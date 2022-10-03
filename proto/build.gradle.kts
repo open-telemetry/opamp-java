@@ -24,8 +24,3 @@ sourceSets {
     }
   }
 }
-
-repositories {
-  mavenCentral()
-  mavenLocal()
-}
