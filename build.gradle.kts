@@ -1,7 +1,20 @@
+import nebula.plugin.release.git.opinion.Strategies
+
 plugins {
   id("otel.java-conventions")
   id("java-library")
   id("maven-publish")
+  id("nebula.release")
+}
+
+release {
+  defaultVersionStrategy = Strategies.getSNAPSHOT()
+}
+
+tasks {
+  named("release") {
+    mustRunAfter("snapshotSetup", "finalSetup")
+  }
 }
 
 repositories {
@@ -14,14 +27,6 @@ dependencies {
 }
 
 group = "io.opentelemetry"
-version = "1.0.0"
-
-publishing {
-  publications.create<MavenPublication>("lib") {
-    from(components["java"])
-  }
-  repositories.maven("/tmp/opamp-java")
-}
 
 tasks.jar {
   from(sourceSets.main.get().output)
