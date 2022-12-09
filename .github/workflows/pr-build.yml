@@ -41,11 +41,6 @@ jobs:
       with:
         arguments: jar
     
-    - name: Publish Jar with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: publish
-    
     - name: Extract the jar to see the contents
       run: |
            ls /tmp/opamp-java/io/opentelemetry/opamp-java/1.0.0/opamp-java-1.0.0.jar
