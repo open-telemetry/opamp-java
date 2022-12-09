@@ -1,4 +1,4 @@
-name: PR builder
+name: "PR Build"
 
 on:
   push:
