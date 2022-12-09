@@ -3,8 +3,6 @@ name: "PR Build"
 on:
   push:
     branches:
-      - main
-      - release/*
   pull_request:
 
 jobs:
