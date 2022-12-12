@@ -1,0 +1,50 @@
+name: "PR Build"
+
+on:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+      - name: Check if submodule has been pulled
+        run: |
+          cd opamp-spec/
+          ls
+      - name: Build Jar with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: jar
+
+      - name: Publish Jar with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: publish
+
+      - name: Find the path of built jar
+        id: jar_path
+        run: echo "JAR_PATH=$(ls build/repos/snapshots/io/opentelemetry/opamp-java/1.0.0-SNAPSHOT/*.jar | grep "1.jar")" >> $GITHUB_OUTPUT
+
+      - name: Extract the jar to see the contents
+        run: |
+          jar -xvf "${{ steps.jar_path.outputs.JAR_PATH }}"
