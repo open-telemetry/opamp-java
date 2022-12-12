@@ -19,7 +19,6 @@ dependencyResolutionManagement {
 pluginManagement {
   plugins {
     id("com.google.protobuf") version "0.8.19"
-    id("nebula.release") version "16.0.0"
   }
 }
 

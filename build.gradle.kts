@@ -3,6 +3,7 @@ plugins {
   id("java-library")
   id("otel.publish-conventions")
 }
+
 apply(from = "version.gradle.kts")
 
 repositories {

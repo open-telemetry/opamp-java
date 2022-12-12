@@ -1,4 +1,3 @@
-import java.time.Duration
 plugins {
     `maven-publish`
     signing
@@ -13,14 +12,9 @@ publishing {
             }
 
             from(components["java"])
-            versionMapping {
-                allVariants {
-                    fromResolutionResult()
-                }
-            }
 
             pom {
-                name.set("OpenTelemetry Protocol")
+                name.set("OpAMP Protocol")
                 url.set("https://github.com/open-telemetry/opamp-java")
 
                 licenses {
@@ -45,12 +39,12 @@ publishing {
                 }
             }
         }
+
     }
     repositories {
         maven {
-            val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
             val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+            url = uri(snapshotsRepoUrl)
         }
     }
 }
