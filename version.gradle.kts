@@ -1,4 +1,4 @@
-val snapshot = true
+val snapshot = true  //set it to false when it is a release workflow
 
 allprojects {
   var ver = "1.0.0"
