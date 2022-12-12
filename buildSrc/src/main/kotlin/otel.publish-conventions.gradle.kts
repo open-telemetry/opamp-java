@@ -1,4 +1,3 @@
-import java.time.Duration
 plugins {
     `maven-publish`
     signing
@@ -6,7 +5,7 @@ plugins {
 
 publishing {
     publications {
-        register<MavenPublication>("mavenPublication") {
+        register<MavenPublication>("maven") {
             afterEvaluate {
                 artifactId = base.archivesName.get()
                 pom.description.set(project.description)
@@ -14,14 +13,8 @@ publishing {
 
             from(components["java"])
 
-            versionMapping {
-                allVariants {
-                    fromResolutionResult()
-                }
-            }
-
             pom {
-                name.set("OpenTelemetry Protocol")
+                name.set("OpAMP Protocol")
                 url.set("https://github.com/open-telemetry/opamp-java")
 
                 licenses {
@@ -46,26 +39,13 @@ publishing {
                 }
             }
         }
+
     }
     repositories {
         maven {
-            val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
             val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+            url = uri(snapshotsRepoUrl)
         }
     }
 }
-afterEvaluate {
-    val publishToSonatype by tasks.getting
-    val release by rootProject.tasks.existing
-    release.configure {
-        finalizedBy(publishToSonatype)
-    }
-}
 
-if (System.getenv("CI") != null) {
-    signing {
-        useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSWORD"))
-        sign(publishing.publications["mavenPublication"])
-    }
-}
