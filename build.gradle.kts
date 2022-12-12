@@ -21,7 +21,7 @@ tasks.jar {
   from(sourceSets.main.get().output)
   dependsOn(configurations.runtimeClasspath)
   from({
-    configurations.runtimeClasspath.get().filter { it.name.equals("proto.jar") }.map { zipTree(it) }
+    configurations.runtimeClasspath.get().filter { it.name.equals("proto-$version.jar") }.map { zipTree(it) }
   })
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

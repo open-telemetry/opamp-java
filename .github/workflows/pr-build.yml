@@ -1,8 +1,6 @@
 name: "PR Build"
 
 on:
-  push:
-    branches:
   pull_request:
 
 jobs:
@@ -39,14 +37,14 @@ jobs:
           arguments: jar
 
       - name: Publish Jar with Gradle
-          uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-          with:
-            arguments: publish
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: publish
 
       - name: Find the path of built jar
         id: jar_path
-        run: echo JAR_PATH=$(ls build/repos/snapshots/io/opentelemetry/opamp-java/1.0.0-SNAPSHOT/*.jar | grep "1.jar") >> $GITHUB_OUTPUT
+        run: echo "JAR_PATH=$(ls build/repos/snapshots/io/opentelemetry/opamp-java/1.0.0-SNAPSHOT/*.jar | grep "1.jar")" >> $GITHUB_OUTPUT
 
       - name: Extract the jar to see the contents
         run: |
-          unzip steps.jar_path.output.JAR_PATH
+          jar -xvf "${{ steps.jar_path.outputs.JAR_PATH }}"
