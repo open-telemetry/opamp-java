@@ -49,4 +49,4 @@ jobs:
 
       - name: Extract the jar to see the contents
         run: |
-          unzip steps.jar_path.output.JAR_PATH
+          unzip steps.jar_path.outputs.JAR_PATH
